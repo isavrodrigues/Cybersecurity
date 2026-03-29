@@ -6,7 +6,7 @@ Avaliacao Intermediaria — Cyberseguranca (Insper)
 
 Extensao para Firefox que detecta rastreadores e violacoes de privacidade durante a navegacao.
 
-**Desenvolvedoras**
+## Desenvolvedoras
 
 Isabela Vieira Rodrigues
 Deena El Orra
