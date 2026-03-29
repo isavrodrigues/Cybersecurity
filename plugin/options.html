@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Privacy Guard - Configuracoes</title>
+  <link rel="stylesheet" href="css/options.css" />
+</head>
+<body>
+<div class="page">
+
+  <nav class="sidebar">
+    <div class="logo">Privacy Guard</div>
+    <a href="#" class="nav-link active" data-tab="settings">Configuracoes</a>
+    <a href="#" class="nav-link" data-tab="blocklist">Lista de Bloqueio</a>
+    <a href="#" class="nav-link" data-tab="report">Relatorio</a>
+    <a href="#" class="nav-link" data-tab="about">Sobre</a>
+  </nav>
+
+  <main class="content">
+
+    <!-- aba configuracoes -->
+    <section id="tab-settings" class="tab active">
+      <h1>Configuracoes</h1>
+
+      <div class="card">
+        <h2>Bloqueio de Rastreadores</h2>
+
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">Ativar bloqueio</div>
+            <div class="setting-desc">Bloqueia rastreadores e dominios da lista personalizada</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="settingBlocking" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">Bloquear rastreadores conhecidos</div>
+            <div class="setting-desc">Usa lista integrada de mais de 80 dominios de rastreamento</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="settingTrackers" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">Bloquear lista personalizada</div>
+            <div class="setting-desc">Bloqueia dominios adicionados manualmente</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="settingCustom" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Lista Branca</h2>
+        <p class="hint">Dominios que nunca serao bloqueados, um por linha.</p>
+        <textarea id="whitelistInput" placeholder="exemplo.com" rows="5"></textarea>
+        <div class="btn-row">
+          <button id="btnSaveWhitelist" class="btn-primary">Salvar lista branca</button>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <button id="btnSaveSettings" class="btn-primary">Salvar Configuracoes</button>
+        <span id="saveStatus" class="save-status"></span>
+      </div>
+    </section>
+
+    <!-- aba lista de bloqueio -->
+    <section id="tab-blocklist" class="tab">
+      <h1>Lista de Bloqueio Personalizada</h1>
+
+      <div class="card">
+        <h2>Adicionar Dominio</h2>
+        <div class="input-row">
+          <input type="text" id="blockDomainInput" placeholder="ex: tracker.com" />
+          <button id="btnAddDomain" class="btn-primary">Adicionar</button>
+        </div>
+        <p class="hint">Subdomínios sao bloqueados automaticamente.</p>
+      </div>
+
+      <div class="card">
+        <h2>Dominios Bloqueados <span class="badge" id="customListCount">0</span></h2>
+        <div id="customBlockList" class="domain-list">
+          <div class="empty-state">nenhum dominio personalizado adicionado</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Importar / Exportar</h2>
+        <div class="btn-row">
+          <button id="btnExport" class="btn-secondary">Exportar lista</button>
+          <button id="btnImport" class="btn-secondary">Importar lista</button>
+          <input type="file" id="importFile" accept=".txt" style="display:none" />
+        </div>
+        <p class="hint">Formato TXT: um dominio por linha.</p>
+      </div>
+    </section>
+
+    <!-- aba relatorio -->
+    <section id="tab-report" class="tab">
+      <h1>Relatorio de Privacidade</h1>
+
+      <div class="card">
+        <p class="hint">Acesse uma pagina e clique em atualizar para ver o relatorio.</p>
+        <button id="btnRefreshReport" class="btn-primary">Atualizar Relatorio</button>
+      </div>
+
+      <div id="reportContent" style="display:none">
+        <div class="card">
+          <h2>Pontuacao de Privacidade</h2>
+          <div id="reportScore" class="report-score"></div>
+        </div>
+        <div class="card">
+          <h2>Rastreadores Detectados</h2>
+          <div id="reportTrackers" class="domain-list"></div>
+        </div>
+        <div class="card">
+          <h2>Cookies</h2>
+          <div id="reportCookies" class="domain-list"></div>
+        </div>
+        <div class="card">
+          <h2>Tentativas de Hijacking</h2>
+          <div id="reportHijacking" class="domain-list"></div>
+        </div>
+        <div class="card">
+          <h2>Armazenamento HTML5</h2>
+          <div id="reportStorage" class="domain-list"></div>
+        </div>
+        <div class="card">
+          <h2>Sincronismo de Cookies</h2>
+          <div id="reportCookieSync" class="domain-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- aba sobre -->
+    <section id="tab-about" class="tab">
+      <h1>Sobre</h1>
+      <div class="card">
+        <h2>Privacy Guard v1.0</h2>
+        <p>Extensao Firefox para deteccao de rastreadores e violacoes de privacidade.</p>
+        <br/>
+        <h3>Funcionalidades</h3>
+        <ul>
+          <li>Deteccao de dominios de terceira parte</li>
+          <li>Bloqueio de rastreadores conhecidos (mais de 80 dominios em 5 categorias)</li>
+          <li>Monitoramento de cookies: 1a e 3a parte, sessao, persistentes e supercookies</li>
+          <li>Deteccao de armazenamento HTML5: localStorage, sessionStorage, IndexedDB, Cache API</li>
+          <li>Deteccao de Canvas Fingerprinting</li>
+          <li>Deteccao de sincronismo de cookies</li>
+          <li>Deteccao de ameacas de hijacking: BeEF hooks, scripts suspeitos, WebSocket anomalo</li>
+          <li>Pontuacao de privacidade 0 a 100 com metodologia detalhada</li>
+          <li>Lista de bloqueio personalizada com importacao e exportacao</li>
+        </ul>
+        <br/>
+        <h3>Metodologia de Pontuacao</h3>
+        <table class="score-table">
+          <tr><th>Criterio</th><th>Deducao</th></tr>
+          <tr><td>Rastreador conhecido</td><td>-5 cada (max -35)</td></tr>
+          <tr><td>Dominio de terceiro</td><td>-2 cada (max -15)</td></tr>
+          <tr><td>Cookie de terceiro</td><td>-3 cada (max -15)</td></tr>
+          <tr><td>Supercookie</td><td>-5 cada (max -10)</td></tr>
+          <tr><td>Canvas Fingerprinting</td><td>-15</td></tr>
+          <tr><td>HTML5 Storage usado</td><td>-5</td></tr>
+          <tr><td>Armazenamento avancado</td><td>-5</td></tr>
+          <tr><td>Sincronismo de cookie</td><td>-10 por dominio (max -20)</td></tr>
+          <tr><td>Hijacking alta severidade</td><td>-20 cada (max -40)</td></tr>
+          <tr><td>Hijacking media severidade</td><td>-10 cada (max -20)</td></tr>
+        </table>
+        <br/>
+        <table class="score-table">
+          <tr><th>Faixa</th><th>Classificacao</th></tr>
+          <tr><td>80 - 100</td><td>Excelente</td></tr>
+          <tr><td>60 - 79</td><td>Bom</td></tr>
+          <tr><td>40 - 59</td><td>Regular</td></tr>
+          <tr><td>20 - 39</td><td>Ruim</td></tr>
+          <tr><td>0 - 19</td><td>Critico</td></tr>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="js/options.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Privacy Guard</title>
+  <link rel="stylesheet" href="css/popup.css" />
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-title">Privacy Guard</div>
+    <button id="btnOptions" class="btn-options" title="Configuracoes">&#9881;</button>
+  </div>
+
+  <div class="score-section">
+    <div class="score-ring" id="scoreRing">
+      <div class="score-value" id="scoreValue">--</div>
+      <div class="score-label" id="scoreLabel">carregando</div>
+    </div>
+    <div class="score-url" id="scoreUrl"></div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card" id="cardTrackers">
+      <div class="stat-num" id="numTrackers">0</div>
+      <div class="stat-label">Rastreadores</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="numThirdParty">0</div>
+      <div class="stat-label">3a Parte</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="numCookies">0</div>
+      <div class="stat-label">Cookies</div>
+    </div>
+    <div class="stat-card" id="cardBlocked">
+      <div class="stat-num" id="numBlocked">0</div>
+      <div class="stat-label">Bloqueados</div>
+    </div>
+  </div>
+
+  <div class="section-title">
+    Alertas
+  </div>
+  <div class="alerts-list" id="alertsList">
+    <div class="empty-state">nenhum alerta nesta pagina</div>
+  </div>
+
+  <div class="section-title">
+    Dominios Detectados
+    <span class="toggle-link" id="toggleDomains">mostrar</span>
+  </div>
+  <div class="domains-list hidden" id="domainsList"></div>
+
+  <div class="section-title">
+    Cookies
+    <span class="toggle-link" id="toggleCookies">mostrar</span>
+  </div>
+  <div class="cookies-list hidden" id="cookiesList"></div>
+
+  <div class="section-title">
+    Metodologia de Pontuacao
+    <span class="toggle-link" id="toggleScore">mostrar</span>
+  </div>
+  <div class="score-detail hidden" id="scoreDetail"></div>
+
+  <div class="footer">
+    <span id="blockingStatus">Bloqueio: <strong>Ativo</strong></span>
+    <button id="btnToggleBlock" class="btn-sm">Pausar</button>
+  </div>
+
+  <script src="js/popup.js"></script>
+</body>
+</html>
