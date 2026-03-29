@@ -11,13 +11,7 @@ Extensao para Firefox que detecta rastreadores e violacoes de privacidade durant
 Isabela Vieira Rodrigues
 Deena El Orra
 
----
 
-| Popup na navegacao | Pagina de configuracoes |
-|---|---|
-| ![popup](assets/screenshot-popup.png) | ![options](assets/screenshot-options.png) |
-
----
 
 ## 1. Estrutura
 
@@ -148,3 +142,12 @@ plugin/
 | social      | Facebook Pixel, Twitter Ads, AddThis        |
 | marketing   | HubSpot, Marketo, Intercom, Pardot          |
 | data        | Demdex, BlueKai, LiveRamp, DoubleVerify     |
+
+
+---
+
+| Popup na navegacao | Pagina de configuracoes |
+|---|---|
+| ![popup](assets/screenshot-popup.png) | ![options](assets/screenshot-options.png) |
+
+
