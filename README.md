@@ -8,7 +8,7 @@ Extensao para Firefox que detecta rastreadores e violacoes de privacidade durant
 
 ## Desenvolvedoras
 
-Isabela Vieira Rodrigues
+Isabela Vieira Rodrigues  
 Deena El Orra
 
 
