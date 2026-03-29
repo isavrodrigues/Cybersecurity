@@ -1,0 +1,9 @@
+# macos
+.DS_Store
+.AppleDouble
+.LSOverride
+
+
+# assets temporarios
+assets/*.png
+assets/*.jpg
