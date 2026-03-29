@@ -6,7 +6,20 @@ Avaliacao Intermediaria — Cyberseguranca (Insper)
 
 Extensao para Firefox que detecta rastreadores e violacoes de privacidade durante a navegacao.
 
-### Estrutura
+**Desenvolvedoras**
+
+Isabela Vieira Rodrigues
+Deena El Orra
+
+---
+
+| Popup na navegacao | Pagina de configuracoes |
+|---|---|
+| ![popup](assets/screenshot-popup.png) | ![options](assets/screenshot-options.png) |
+
+---
+
+## 1. Estrutura
 
 ```
 plugin/
@@ -27,59 +40,111 @@ plugin/
     icon-96.png       icone 96x96 px
 ```
 
-### Como instalar no Firefox
+## 2. Como Instalar
 
-1. Abrir `about:debugging` no Firefox
-2. Clicar em "Este Firefox"
-3. Clicar em "Carregar extensao temporaria..."
-4. Selecionar o arquivo `plugin/manifest.json`
+1. Abrir o Firefox
+2. Digitar `about:debugging` na barra de endereco
+3. Clicar em "Este Firefox"
+4. Clicar em "Carregar extensao temporaria..."
+5. Selecionar o arquivo `plugin/manifest.json`
 
-### Funcionalidades
+## 3. Funcionalidades
 
-**Deteccao**
-- Conexoes a dominios de terceira parte
-- Cookies de 1a e 3a parte, de sessao, persistentes e supercookies
-- Armazenamento HTML5: localStorage, sessionStorage, IndexedDB, Cache API
-- Canvas Fingerprinting (interceptacao de toDataURL, getImageData, toBlob)
-- Sincronismo de cookies (cookies enviados a terceiros e parametros de ID em URLs)
-- Ameacas de hijacking: scripts BeEF, portas suspeitas, eval ofuscado, WebSocket anomalo, iframes ocultos
+### 3.1 Deteccao de Dominios de Terceira Parte
 
-**Bloqueio**
-- Lista integrada com mais de 80 rastreadores conhecidos em 5 categorias
-- Lista personalizada com importacao e exportacao em TXT
-- Lista branca para dominios permitidos
+- Intercepta todas as requisicoes feitas durante a navegacao
+- Compara o dominio da requisicao com o dominio da pagina atual
+- Exibe os dominios de terceiros encontrados com tipo e categoria
 
-**Interface**
-- Popup com pontuacao de privacidade (0 a 100), contadores e alertas
-- Pagina de configuracoes com relatorio completo por pagina
+### 3.2 Bloqueio de Rastreadores
 
-### Metodologia de Pontuacao
+- Cancela automaticamente requisicoes para dominios rastreadores conhecidos
+- Usa lista interna com mais de 80 dominios em 5 categorias: advertising, analytics, social, marketing e data
+- Permite pausar o bloqueio pelo popup
 
-| Criterio                   | Deducao             |
-|----------------------------|---------------------|
-| Rastreador conhecido       | -5 cada (max -35)   |
-| Dominio de terceiro        | -2 cada (max -15)   |
-| Cookie de terceiro         | -3 cada (max -15)   |
-| Supercookie                | -5 cada (max -10)   |
-| Canvas Fingerprinting      | -15                 |
-| HTML5 Storage usado        | -5                  |
-| Armazenamento avancado     | -5                  |
-| Sincronismo de cookie      | -10 por dom (max -20)|
-| Hijacking alta severidade  | -20 cada (max -40)  |
-| Hijacking media severidade | -10 cada (max -20)  |
+### 3.3 Monitoramento de Cookies
 
-| Faixa   | Classificacao |
-|---------|---------------|
-| 80-100  | Excelente     |
-| 60-79   | Bom           |
-| 40-59   | Regular       |
-| 20-39   | Ruim          |
-| 0-19    | Critico       |
+- Detecta cookies via headers HTTP (`Set-Cookie`)
+- Diferencia cookies de primeira e terceira parte
+- Classifica como sessao (sem `expires`/`max-age`) ou persistente
+- Identifica supercookies: persistentes com `HttpOnly + Secure + SameSite=None`
 
-### Categorias de Rastreadores
+### 3.4 Armazenamento HTML5
 
-- advertising: redes de anuncios (DoubleClick, Criteo, AppNexus...)
-- analytics: ferramentas de analise (Google Analytics, Hotjar, Mixpanel...)
-- social: redes sociais (Facebook, Twitter...)
-- marketing: CRM e automacao (HubSpot, Marketo, Intercom...)
-- data: coleta e fingerprinting (Demdex, BlueKai, LiveRamp...)
+- Intercepta chamadas a `localStorage` e `sessionStorage` (`setItem`)
+- Le itens ja existentes no carregamento da pagina
+- Detecta uso de `IndexedDB` e `Cache API` (supercookies avancados)
+
+### 3.5 Canvas Fingerprinting
+
+- Intercepta `toDataURL`, `toBlob` e `getImageData` do canvas
+- Detecta quando a pagina le pixels do canvas para identificar o navegador
+- Registra o evento e desconta pontos na pontuacao de privacidade
+
+### 3.6 Sincronismo de Cookies
+
+- Detecta cookies enviados via header para dominios de terceiros
+- Identifica parametros de ID de rastreamento em URLs (`uid`, `uuid`, `cid`, etc.)
+- Registra dominio e descricao do sincronismo detectado
+
+### 3.7 Deteccao de Hijacking
+
+- Monitora scripts injetados com padroes de BeEF (`hook.js`, `/beef`)
+- Detecta scripts carregando de portas nao-padrao (3000, 4444, 8080...)
+- Alerta sobre chamadas `eval()` com codigo extenso (possivel ofuscacao)
+- Monitora WebSockets para dominios externos ou portas suspeitas
+- Detecta iframes ocultos (possivel clickjacking)
+- Monitora alteracoes em `document.domain`
+
+### 3.8 Lista de Bloqueio Personalizada
+
+- Adicionar e remover dominios manualmente
+- Importar lista em formato TXT (um dominio por linha)
+- Exportar lista atual como arquivo TXT
+- Lista branca de dominios que nunca serao bloqueados
+
+### 3.9 Pontuacao de Privacidade
+
+- Pontuacao de 0 a 100 calculada automaticamente a cada pagina
+- Metodologia com 10 criterios e deducoes ponderadas
+- Classificacao em 5 niveis: Excelente, Bom, Regular, Ruim, Critico
+- Detalhamento completo das deducoes no popup e no relatorio
+
+### 3.10 Interface e Relatorio
+
+- Popup com pontuacao, contadores e alertas em tempo real
+- Pagina de configuracoes com 4 abas: Configuracoes, Lista de Bloqueio, Relatorio e Sobre
+- Relatorio completo com rastreadores, cookies, hijacking, storage e cookie sync
+
+## 4. Metodologia de Pontuacao
+
+| Criterio                    | Deducao              |
+|-----------------------------|----------------------|
+| Rastreador conhecido        | -5 cada (max -35)    |
+| Dominio de terceiro         | -2 cada (max -15)    |
+| Cookie de terceiro          | -3 cada (max -15)    |
+| Supercookie                 | -5 cada (max -10)    |
+| Canvas Fingerprinting       | -15                  |
+| HTML5 Storage usado         | -5                   |
+| Armazenamento avancado      | -5                   |
+| Sincronismo de cookie       | -10 por dom (max -20)|
+| Hijacking alta severidade   | -20 cada (max -40)   |
+| Hijacking media severidade  | -10 cada (max -20)   |
+
+| Faixa  | Classificacao |
+|--------|---------------|
+| 80-100 | Excelente     |
+| 60-79  | Bom           |
+| 40-59  | Regular       |
+| 20-39  | Ruim          |
+| 0-19   | Critico       |
+
+## 5. Categorias de Rastreadores
+
+| Categoria   | Exemplos                                    |
+|-------------|---------------------------------------------|
+| advertising | DoubleClick, Criteo, AppNexus, Taboola      |
+| analytics   | Google Analytics, Hotjar, Mixpanel, Segment |
+| social      | Facebook Pixel, Twitter Ads, AddThis        |
+| marketing   | HubSpot, Marketo, Intercom, Pardot          |
+| data        | Demdex, BlueKai, LiveRamp, DoubleVerify     |

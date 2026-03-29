@@ -15,7 +15,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupToggle("toggleCookies", "cookiesList");
   setupToggle("toggleScore", "scoreDetail");
 
-  document.getElementById("btnOptions").addEventListener("click", () => {
+  document.getElementById("btnOptions").addEventListener("click", async () => {
+    // salva o id da aba atual antes de abrir opcoes, para o relatorio usar
+    await browser.storage.local.set({ lastAnalyzedTabId: tab.id });
     browser.runtime.openOptionsPage();
     window.close();
   });

@@ -182,12 +182,23 @@ async function importList(e) {
 
 function setupReportHandlers() {
   document.getElementById("btnRefreshReport").addEventListener("click", async () => {
-    const [tab] = await browser.tabs.query({ active: true, lastFocusedWindow: true });
-    if (!tab) return;
+    // tenta usar o id da aba salvo pelo popup
+    const stored = await browser.storage.local.get("lastAnalyzedTabId");
+    let tabId = stored.lastAnalyzedTabId;
+
+    // fallback: procura a aba mais recente que nao seja da extensao
+    if (!tabId) {
+      const allTabs = await browser.tabs.query({});
+      const candidate = allTabs
+        .filter(t => t.url && !t.url.startsWith("moz-extension://"))
+        .sort((a, b) => (b.lastAccessed || 0) - (a.lastAccessed || 0))[0];
+      if (!candidate) return;
+      tabId = candidate.id;
+    }
 
     const stats = await browser.runtime.sendMessage({
       type: "getTabStats",
-      tabId: tab.id
+      tabId
     });
 
     renderReport(stats);
